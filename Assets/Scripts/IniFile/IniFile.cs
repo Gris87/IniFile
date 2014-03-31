@@ -280,6 +280,26 @@ public class IniFile
         }
     }
 
+	/// <summary>
+	/// Change name of key.
+	/// </summary>
+	/// <param name="key">Name of property</param>
+	/// <param name="newKey">New name of property</param>
+	public void RenameKey(string key, string newKey)
+	{
+		Remove(newKey);
+
+		for (int i=0; i<mKeys.Count; ++i)
+		{
+			if (mKeys[i].Equals(key))
+			{
+				mKeys[i]=newKey;
+
+				return;
+			}
+		}
+	}
+
     /// <summary>
     /// Save properties to file.
     /// </summary>
@@ -357,6 +377,21 @@ public class IniFile
             }
         }
     }
+
+	/// <summary>
+	/// Returns the list of keys.
+	/// </summary>
+	public string[] keys()
+	{
+		string[] res=new string[mKeys.Count];
+
+		for (int i=0; i<mKeys.Count; ++i)
+		{
+			res[i]=(string)mKeys[i];
+		}
+
+		return res;
+	}
 
     /// <summary>
     /// Amount of properties.

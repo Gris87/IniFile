@@ -8,7 +8,7 @@ public class IniFile_DemoScript : MonoBehaviour
 	private Vector2 scrollPosition=Vector2.zero;
 
 	// Use this for initialization
-	void Start ()
+	void Start()
 	{
 		ini=new IniFile("Test");
 	}
@@ -30,8 +30,42 @@ public class IniFile_DemoScript : MonoBehaviour
 			ini.Set("Key "+ini.Count().ToString(), "");
 		}
 
-		scrollPosition=GUI.BeginScrollView(new Rect(Screen.width*0.05f, Screen.height*0.15f, Screen.width*0.9f, Screen.height*0.8f), scrollPosition, new Rect(0, 0, Screen.width*0.9f, Screen.height*0.05f*ini.Count()));
+		string[] keys=ini.keys();
+
+		float scrollWidth  = Screen.width*0.9f;
+		float scrollHeight = Screen.height*0.8f;
+		float rowHeight    = Screen.height*0.025f;
+		float rowOffset    = rowHeight+Screen.height*0.005f;
+
+		GUI.BeginGroup(new Rect(Screen.width*0.05f, Screen.height*0.15f, scrollWidth, scrollHeight));
+		scrollPosition=GUI.BeginScrollView(new Rect(0, 0, scrollWidth-1, scrollHeight-1), scrollPosition, new Rect(0, 0, scrollWidth*0.95f, rowHeight+(keys.Length-1)*rowOffset));
+
+		for (int i=0; i<keys.Length; ++i)
+		{
+			string key;
+			string value=ini.Get(keys[i]);
+			string valueNew;
+
+			if (GUI.Button(new Rect(0, rowOffset*i, scrollWidth*0.05f,  rowHeight), "-"))
+			{
+				ini.Remove(keys[i]);
+			}
+
+			key      = GUI.TextField(new Rect(scrollWidth*0.055f, rowOffset*i, scrollWidth*0.45f,  rowHeight), keys[i]);
+			valueNew = GUI.TextField(new Rect(scrollWidth*0.51f, rowOffset*i,  scrollWidth*0.45f,  rowHeight), value);
+
+			if (!key.Equals(keys[i]))
+			{
+				ini.RenameKey(keys[i], key);
+			}
+			else
+			if (!value.Equals(valueNew))
+			{
+				ini.Set(key, valueNew);
+			}
+		}
 
 		GUI.EndScrollView();
+		GUI.EndGroup();
 	}
 }
