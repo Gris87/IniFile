@@ -281,7 +281,7 @@ public class IniFile
     }
 
 	/// <summary>
-	/// Change name of key.
+	/// Change name of key. This function may remove existing newKey property.
 	/// </summary>
 	/// <param name="key">Name of property</param>
 	/// <param name="newKey">New name of property</param>
