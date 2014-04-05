@@ -112,7 +112,7 @@ public class IniFile
     {
         Set(key, value, "");
     }
-    
+
     /// <summary>
     /// Set value of property and add comment. It will create new property if absent.
     /// </summary>
@@ -223,7 +223,7 @@ public class IniFile
     public bool Get(string key, bool defaultValue)
     {
         string value=Get(key);
-        
+
         try
         {
             return Convert.ToBoolean(value);
@@ -280,25 +280,25 @@ public class IniFile
         }
     }
 
-	/// <summary>
-	/// Change name of key. This function may remove existing newKey property.
-	/// </summary>
-	/// <param name="key">Name of property</param>
-	/// <param name="newKey">New name of property</param>
-	public void RenameKey(string key, string newKey)
-	{
-		Remove(newKey);
+    /// <summary>
+    /// Change name of key. This function may remove existing newKey property.
+    /// </summary>
+    /// <param name="key">Name of property</param>
+    /// <param name="newKey">New name of property</param>
+    public void RenameKey(string key, string newKey)
+    {
+        Remove(newKey);
 
-		for (int i=0; i<mKeys.Count; ++i)
-		{
-			if (mKeys[i].Equals(key))
-			{
-				mKeys[i]=newKey;
+        for (int i=0; i<mKeys.Count; ++i)
+        {
+            if (mKeys[i].Equals(key))
+            {
+                mKeys[i]=newKey;
 
-				return;
-			}
-		}
-	}
+                return;
+            }
+        }
+    }
 
     /// <summary>
     /// Save properties to file.
@@ -378,20 +378,20 @@ public class IniFile
         }
     }
 
-	/// <summary>
-	/// Returns the list of keys.
-	/// </summary>
-	public string[] keys()
-	{
-		string[] res=new string[mKeys.Count];
+    /// <summary>
+    /// Returns the list of keys.
+    /// </summary>
+    public string[] keys()
+    {
+        string[] res=new string[mKeys.Count];
 
-		for (int i=0; i<mKeys.Count; ++i)
-		{
-			res[i]=(string)mKeys[i];
-		}
+        for (int i=0; i<mKeys.Count; ++i)
+        {
+            res[i]=(string)mKeys[i];
+        }
 
-		return res;
-	}
+        return res;
+    }
 
     /// <summary>
     /// Amount of properties.
