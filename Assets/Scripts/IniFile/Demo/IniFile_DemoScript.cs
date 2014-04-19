@@ -27,7 +27,7 @@ public class IniFile_DemoScript : MonoBehaviour
 
         if (GUI.Button(new Rect(Screen.width*0.680f, Screen.height*0.05f, Screen.width*0.265f, Screen.height*0.05f), "Add"))
         {
-            ini.Set("Key "+ini.Count().ToString(), "");
+            ini.set("Key "+ini.count().ToString(), "");
         }
 
         string[] keys=ini.keys();
@@ -43,12 +43,12 @@ public class IniFile_DemoScript : MonoBehaviour
         for (int i=0; i<keys.Length; ++i)
         {
             string key;
-            string value=ini.Get(keys[i]);
+            string value=ini.get(keys[i]);
             string valueNew;
 
             if (GUI.Button(new Rect(0, rowOffset*i, scrollWidth*0.05f,  rowHeight), "-"))
             {
-                ini.Remove(keys[i]);
+                ini.remove(keys[i]);
             }
 
             key      = GUI.TextField(new Rect(scrollWidth*0.055f, rowOffset*i, scrollWidth*0.45f,  rowHeight), keys[i]);
@@ -56,12 +56,12 @@ public class IniFile_DemoScript : MonoBehaviour
 
             if (!key.Equals(keys[i]))
             {
-                ini.RenameKey(keys[i], key);
+                ini.renameKey(keys[i], key);
             }
             else
             if (!value.Equals(valueNew))
             {
-                ini.Set(key, valueNew);
+                ini.set(key, valueNew);
             }
         }
 
