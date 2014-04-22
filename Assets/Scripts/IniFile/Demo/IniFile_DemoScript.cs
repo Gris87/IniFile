@@ -34,7 +34,7 @@ public class IniFile_DemoScript : MonoBehaviour
 
         float scrollWidth  = Screen.width*0.9f;
         float scrollHeight = Screen.height*0.8f;
-        float rowHeight    = Screen.height*0.025f;
+        float rowHeight    = Screen.height*0.04f;
         float rowOffset    = rowHeight+Screen.height*0.005f;
 
         GUI.BeginGroup(new Rect(Screen.width*0.05f, Screen.height*0.15f, scrollWidth, scrollHeight));
