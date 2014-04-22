@@ -3,6 +3,10 @@ IniFile
 
 Class that allow to create and parse simple ini files.
 
+Demo: http://gris.ucoz.ru/UnityModules/IniFile/Web/IniFile.html
+
+Description:
+
 The result ini file will be saved in Application.persistentDataPath.
 IniFile will use PlayerPrefs to store data in case of WebPlayer build.
 You can also force IniFile to use PlayerPrefs by defining USE_PLAYER_PREFS macro at the beginning of "IniFile.cs" file.
@@ -27,3 +31,8 @@ void Start()
 
     ini.save("TestFile");
 }
+
+Links:
+
+Site:   http://gris.ucoz.ru/index/inifile/0-9
+Github: https://github.com/Gris87/IniFile
