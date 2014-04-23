@@ -35,4 +35,4 @@ void Start()
 Links:
 
 Site:   http://gris.ucoz.ru/index/inifile/0-9
-Github: https://github.com/Gris87/IniFile
+GitHub: https://github.com/Gris87/IniFile
