@@ -37,6 +37,6 @@ mkdir out\Mac
 echo Web
 %UNITY% -batchmode -projectPath %CD% -buildWebPlayer out\Web\%APP_NAME% -quit
 
-if %1 neq no_pause (
+if [%1]==[] (
 pause
 )
