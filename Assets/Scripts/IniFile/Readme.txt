@@ -3,7 +3,8 @@ IniFile
 
 Class that allow to create and parse simple ini files.
 
-Demo: http://gris.ucoz.ru/UnityModules/IniFile/Web/IniFile.html
+Demo:              http://gris.ucoz.ru/UnityModules/IniFile/Web/IniFile.html
+Unity Asset Store: http://u3d.as/7AU
 
 Description:
 
@@ -32,7 +33,10 @@ void Start()
     ini.save("TestFile");
 }
 
+
+
 Links:
 
-Site:   http://gris.ucoz.ru/index/inifile/0-9
-GitHub: https://github.com/Gris87/IniFile
+Site:              http://gris.ucoz.ru/index/inifile/0-9
+Unity Asset Store: http://u3d.as/7AU
+GitHub:            https://github.com/Gris87/IniFile
