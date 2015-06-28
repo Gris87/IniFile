@@ -77,6 +77,8 @@ public class IniFile
 
     private Dictionary<string, KeyPair> mKeysMap;
     private List<KeyPair>               mKeysList;
+	private List<string>                mUsedGroupsList;
+	private string                      mCurrentGroup;
 
 
 
@@ -113,9 +115,37 @@ public class IniFile
     /// </summary>
     private void Init()
     {
-        mKeysMap  = new Dictionary<string, KeyPair>();
-        mKeysList = new List<KeyPair>();
+        mKeysMap        = new Dictionary<string, KeyPair>();
+        mKeysList       = new List<KeyPair>();
+		mUsedGroupsList = new List<string>();
+		mCurrentGroup   = "";
     }
+
+	/// <summary>
+	/// Opens group with specified name.
+	/// </summary>
+	/// <param name="group">Group name.</param>
+	public void BeginGroup(string group)
+	{
+		mUsedGroupsList.Add(mCurrentGroup);
+		mCurrentGroup += group + "/";
+	}
+
+	/// <summary>
+	/// Close the latest openned group.
+	/// </summary>
+	public void EndGroup()
+	{
+		if (mUsedGroupsList.Count > 0)
+		{
+			mCurrentGroup = mUsedGroupsList[mUsedGroupsList.Count - 1];
+			mUsedGroupsList.RemoveAt(mUsedGroupsList.Count - 1);
+		}
+		else
+		{
+			Debug.LogError("Failed to close group. There is no more openned group");
+		}
+	}
 
     #region Set functions
     /// <summary>
@@ -220,20 +250,27 @@ public class IniFile
     /// <param name="comment">Comment for property</param>
 	public void Set(string key, string value, string comment)
     {
-        KeyPair outKeyPair = null;
-
-        if (mKeysMap.TryGetValue(key, out outKeyPair))
-        {
-            outKeyPair.value   = value;
-            outKeyPair.comment = comment;
-
-            return;
-        }
-
-        outKeyPair = new KeyPair(key, value, comment);
-
-        mKeysMap.Add(key, outKeyPair);
-        mKeysList.Add(outKeyPair);
+		if (!key.Contains("="))
+		{
+			KeyPair outKeyPair = null;
+			
+			if (mKeysMap.TryGetValue(mCurrentGroup + key, out outKeyPair))
+			{
+				outKeyPair.value   = value;
+				outKeyPair.comment = comment;
+				
+				return;
+			}
+			
+			outKeyPair = new KeyPair(mCurrentGroup + key, value, comment);
+			
+			mKeysMap.Add(mCurrentGroup + key, outKeyPair);
+			mKeysList.Add(outKeyPair);
+		}
+		else
+		{
+			Debug.LogError("Invalid key name: " + key);
+		}        
     }
     #endregion
 
@@ -336,12 +373,19 @@ public class IniFile
     /// <param name="defaultValue">Default value if property absent</param>
 	public string Get(string key, string defaultValue)
     {
-        KeyPair outKeyPair = null;
-
-        if (mKeysMap.TryGetValue(key, out outKeyPair))
-        {
-            return outKeyPair.value;
-        }
+		if (!key.Contains("="))
+		{
+			KeyPair outKeyPair = null;
+			
+			if (mKeysMap.TryGetValue(mCurrentGroup + key, out outKeyPair))
+			{
+				return outKeyPair.value;
+			}
+		}
+		else
+		{
+			Debug.LogError("Invalid key name: " + key);
+		}       
 
         return defaultValue;
     }
@@ -355,10 +399,10 @@ public class IniFile
     {
         KeyPair outKeyPair = null;
 
-        if (mKeysMap.TryGetValue(key, out outKeyPair))
+		if (mKeysMap.TryGetValue(mCurrentGroup + key, out outKeyPair))
         {
             mKeysList.Remove(outKeyPair);
-            mKeysMap.Remove(key);
+			mKeysMap.Remove(mCurrentGroup + key);
         }
     }
 
@@ -374,15 +418,22 @@ public class IniFile
             return;
         }
 
-        KeyPair outKeyPair = null;
-
-        if (mKeysMap.TryGetValue(key, out outKeyPair))
-        {
-            outKeyPair.key = newKey;
-
-            mKeysMap.Add(newKey, outKeyPair);
-            mKeysMap.Remove(key);
-        }
+		if (!newKey.Contains("="))
+		{
+			KeyPair outKeyPair = null;
+			
+			if (mKeysMap.TryGetValue(mCurrentGroup + key, out outKeyPair))
+			{
+				outKeyPair.key = mCurrentGroup + newKey;
+				
+				mKeysMap.Add(mCurrentGroup + newKey, outKeyPair);
+				mKeysMap.Remove(mCurrentGroup + key);
+			}
+		}
+		else
+		{
+			Debug.LogError("Invalid key name: " + newKey);
+		}        
     }
 
     /// <summary>
