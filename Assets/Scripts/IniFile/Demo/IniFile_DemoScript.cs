@@ -1,71 +1,122 @@
 using UnityEngine;
-using System.Collections;
+using UnityEngine.UI;
+
+
 
 public class IniFile_DemoScript : MonoBehaviour
 {
+	public Button                removeButton     = null;
+	public HorizontalLayoutGroup horizontalLayout = null;
+	public InputField            inputField       = null;
+
+
+
     private IniFile ini;
 
-    private Vector2 scrollPosition=Vector2.zero;
+
 
     // Use this for initialization
     void Start()
     {
-        ini=new IniFile("Test");
+        ini = new IniFile("Test");
+		Rebuild();
     }
 
-    void OnGUI()
-    {
-        if (GUI.Button(new Rect(Screen.width*0.05f, Screen.height*0.05f, Screen.width*0.265f, Screen.height*0.05f), "Reload"))
-        {
-            ini.load("Test");
-        }
+	public void Reload()
+	{
+		ini.load("Test");
+		Rebuild();
+	}
 
-        if (GUI.Button(new Rect(Screen.width*0.365f, Screen.height*0.05f, Screen.width*0.265f, Screen.height*0.05f), "Save"))
-        {
-            ini.save("Test");
-        }
+	public void Save()
+	{
+		ini.save("Test");
+	}
 
-        if (GUI.Button(new Rect(Screen.width*0.680f, Screen.height*0.05f, Screen.width*0.265f, Screen.height*0.05f), "Add"))
-        {
-            ini.set("Key "+ini.count().ToString(), "");
-        }
+	public void Add()
+	{
+		ini.set("Key " + ini.count().ToString(), "");
+		Rebuild();
+	}
 
-        string[] keys=ini.keys();
+	private void Rebuild()
+	{
+		for (int i = 0; i < transform.childCount; ++i)
+		{
+			UnityEngine.Object.DestroyObject(transform.GetChild(i).gameObject);
+		}
 
-        float scrollWidth  = Screen.width*0.9f;
-        float scrollHeight = Screen.height*0.8f;
-        float rowHeight    = Screen.height*0.04f;
-        float rowOffset    = rowHeight+Screen.height*0.005f;
+		float contentHeight = 4f;
 
-        GUI.BeginGroup(new Rect(Screen.width*0.05f, Screen.height*0.15f, scrollWidth, scrollHeight));
-        scrollPosition=GUI.BeginScrollView(new Rect(0, 0, scrollWidth-1, scrollHeight-1), scrollPosition, new Rect(0, 0, scrollWidth*0.95f, rowHeight+(keys.Length-1)*rowOffset));
+		string[] keys = ini.keys();
 
-        for (int i=0; i<keys.Length; ++i)
-        {
-            string key;
-            string value=ini.get(keys[i]);
-            string valueNew;
+		for (int i = 0; i < keys.Length; ++i) 
+		{
+			string key   = keys[i];
+			string value = ini.get(key);
 
-            if (GUI.Button(new Rect(0, rowOffset*i, scrollWidth*0.05f,  rowHeight), "-"))
-            {
-                ini.remove(keys[i]);
-            }
+			// ---------------------------------------------------------------------------------------
 
-            key      = GUI.TextField(new Rect(scrollWidth*0.055f, rowOffset*i, scrollWidth*0.45f,  rowHeight), keys[i]);
-            valueNew = GUI.TextField(new Rect(scrollWidth*0.51f, rowOffset*i,  scrollWidth*0.45f,  rowHeight), value);
+			GameObject removeButtonObject = UnityEngine.Object.Instantiate<GameObject>(removeButton.gameObject);
+			removeButtonObject.transform.SetParent(transform);
+			RectTransform removeButtonTransform = removeButtonObject.transform as RectTransform;
 
-            if (!key.Equals(keys[i]))
-            {
-                ini.renameKey(keys[i], key);
-            }
-            else
-            if (!value.Equals(valueNew))
-            {
-                ini.set(key, valueNew);
-            }
-        }
+			removeButtonTransform.offsetMin = new Vector2(4f,  -contentHeight - 30f);
+			removeButtonTransform.offsetMax = new Vector2(44f, -contentHeight);
 
-        GUI.EndScrollView();
-        GUI.EndGroup();
-    }
+			Button removeBtn = removeButtonObject.GetComponent<Button>();
+			removeBtn.onClick.AddListener(() => RemoveKey(key));
+
+			// ---------------------------------------------------------------------------------------
+			
+			GameObject layoutObject = UnityEngine.Object.Instantiate<GameObject>(horizontalLayout.gameObject);
+			layoutObject.transform.SetParent(transform);
+			RectTransform layoutTransform = layoutObject.transform as RectTransform;
+
+			layoutTransform.offsetMin = new Vector2(48f, -contentHeight - 30f);
+			layoutTransform.offsetMax = new Vector2(-4f,  -contentHeight);
+
+			// ---------------------------------------------------------------------------------------
+
+			GameObject keyInputFieldObject = UnityEngine.Object.Instantiate<GameObject>(inputField.gameObject);
+			keyInputFieldObject.transform.SetParent(layoutObject.transform);
+
+			InputField keyInputField = keyInputFieldObject.GetComponent<InputField>();
+			keyInputField.text = key;
+			keyInputField.onEndEdit.AddListener((newKey) => RenameKey(key, newKey));
+
+			// ---------------------------------------------------------------------------------------
+
+			GameObject valueInputFieldObject = UnityEngine.Object.Instantiate<GameObject>(inputField.gameObject);
+			valueInputFieldObject.transform.SetParent(layoutObject.transform);
+
+			InputField valueInputField = valueInputFieldObject.GetComponent<InputField>();
+			valueInputField.text = value;
+			valueInputField.onEndEdit.AddListener((newValue) => ChangeValue(key, newValue));
+
+			// ---------------------------------------------------------------------------------------
+
+			contentHeight += 34f;
+		}
+
+		RectTransform rectTransform = transform as RectTransform;
+		rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, contentHeight);
+	}
+
+	private void RemoveKey(string key)
+	{
+		ini.remove(key);
+		Rebuild();
+	}
+
+	private void RenameKey(string key, string newKey)
+	{
+		ini.renameKey(key, newKey);
+		Rebuild();
+	}
+
+	private void ChangeValue(string key, string value)
+	{
+		ini.set(key, value);
+	}
 }
