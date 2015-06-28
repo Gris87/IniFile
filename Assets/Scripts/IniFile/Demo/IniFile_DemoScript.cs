@@ -24,18 +24,18 @@ public class IniFile_DemoScript : MonoBehaviour
 
 	public void Reload()
 	{
-		ini.load("Test");
+		ini.Load("Test");
 		Rebuild();
 	}
 
 	public void Save()
 	{
-		ini.save("Test");
+		ini.Save("Test");
 	}
 
 	public void Add()
 	{
-		ini.set("Key " + ini.count().ToString(), "");
+		ini.Set("Key " + ini.count.ToString(), "");
 		Rebuild();
 	}
 
@@ -48,12 +48,12 @@ public class IniFile_DemoScript : MonoBehaviour
 
 		float contentHeight = 4f;
 
-		string[] keys = ini.keys();
+		string[] keys = ini.keys;
 
 		for (int i = 0; i < keys.Length; ++i) 
 		{
 			string key   = keys[i];
-			string value = ini.get(key);
+			string value = ini.Get(key);
 
 			// ---------------------------------------------------------------------------------------
 
@@ -105,18 +105,18 @@ public class IniFile_DemoScript : MonoBehaviour
 
 	private void RemoveKey(string key)
 	{
-		ini.remove(key);
+		ini.Remove(key);
 		Rebuild();
 	}
 
 	private void RenameKey(string key, string newKey)
 	{
-		ini.renameKey(key, newKey);
+		ini.RenameKey(key, newKey);
 		Rebuild();
 	}
 
 	private void ChangeValue(string key, string value)
 	{
-		ini.set(key, value);
+		ini.Set(key, value);
 	}
 }
