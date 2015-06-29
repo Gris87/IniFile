@@ -47,9 +47,9 @@ public class IniFile
 		/// Returns a <see cref="System.String"/> that represents the current <see cref="IniFile+KeyPair"/>.
 		/// </summary>
 		/// <returns>A <see cref="System.String"/> that represents the current <see cref="IniFile+KeyPair"/>.</returns>
-		public override string ToString ()
+		public override string ToString()
 		{
-			return string.Format ("[KeyPair: key={0}, value={1}, comment={2}]", key, value, comment);
+			return string.Format("[KeyPair: key={0}, value={1}, comment={2}]", key, value, comment);
 		}
 
 		/// <summary>
@@ -60,7 +60,7 @@ public class IniFile
 		/// otherwise, <c>false</c>.</returns>
 		public override bool Equals(object obj)
 		{
-			if (obj == null || this == null)
+			if (obj == null)
 			{
 				return false;
 			}
@@ -70,12 +70,12 @@ public class IniFile
 				return true;
 			}
 			
-			if (!(obj is KeyPair))
+			KeyPair another = obj as KeyPair;
+
+			if (another == null)
 			{
 				return false;
 			}
-			
-			KeyPair another = obj as KeyPair;
 
 			if (key != another.key)
 			{
@@ -199,6 +199,15 @@ public class IniFile
 				return res;
 			}
 		}
+	}
+
+	/// <summary>
+	/// Gets the current group.
+	/// </summary>
+	/// <value>The current group.</value>
+	public string currentGroup
+	{
+		get { return mCurrentGroup; }
 	}
 
 
@@ -630,31 +639,8 @@ public class IniFile
 
         try
         {
-            StreamWriter stream = new StreamWriter(Application.persistentDataPath + "/" + fileName + ".ini");
-
-			// TODO: Implement groups
-
-            for (int i = 0; i < mKeysList.Count; ++i)
-            {
-                if (!mKeysList[i].comment.Equals(""))
-                {
-                    stream.WriteLine("; " + mKeysList[i].comment);
-                }
-
-				if (
-					mKeysList[i].value.Contains(" ")
-					||
-					mKeysList[i].value.Contains("\t")
-				   )
-				{
-					stream.WriteLine(mKeysList[i].key + " = \"" + mKeysList[i].value + "\"");
-				}
-				else
-				{
-					stream.WriteLine(mKeysList[i].key + " = " + mKeysList[i].value);
-				}
-            }
-
+            StreamWriter writer = new StreamWriter(Application.persistentDataPath + "/" + fileName + ".ini");
+			Save(writer);
             stream.Close();
         }
         catch(IOException e)
@@ -664,6 +650,36 @@ public class IniFile
         }
     }
 #endif
+
+	/// <summary>
+	/// Save properties with specified text writer.
+	/// </summary>
+	/// <param name="writer">Text writer.</param>
+	private void Save(TextWriter writer)
+	{
+		// TODO: Implement groups
+		
+		for (int i = 0; i < mKeysList.Count; ++i)
+		{
+			if (!mKeysList[i].comment.Equals(""))
+			{
+				writer.WriteLine("; " + mKeysList[i].comment);
+			}
+			
+			if (
+				mKeysList[i].value.Contains(" ")
+				||
+				mKeysList[i].value.Contains("\t")
+				)
+			{
+				writer.WriteLine(mKeysList[i].key + " = \"" + mKeysList[i].value + "\"");
+			}
+			else
+			{
+				writer.WriteLine(mKeysList[i].key + " = " + mKeysList[i].value);
+			}
+		}
+	}
 
     /// <summary>
     /// Load properties from file.
@@ -773,9 +789,15 @@ public class IniFile
 	/// <returns>A <see cref="System.String"/> that represents the current <see cref="IniFile"/>.</returns>
 	public override string ToString()
 	{
-		// TODO: Implement
+		string res;
 
-		return "";
+		StringWriter writer = new StringWriter();
+		writer.NewLine = "\n";
+		Save(writer);
+		res = writer.ToString();
+		writer.Close();
+
+		return res;
 	}
 
 	/// <summary>
@@ -785,22 +807,22 @@ public class IniFile
 	/// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to the current <see cref="IniFile"/>; otherwise, <c>false</c>.</returns>
 	public override bool Equals(object obj)
 	{
-		if (obj == null || this == null)
+		if (obj == null)
 		{
 			return false;
 		}
-
+		
 		if (obj == this)
 		{
 			return true;
 		}
-
-		if (!(obj is IniFile))
+		
+		IniFile another = obj as IniFile;
+		
+		if (another == null)
 		{
 			return false;
 		}
-
-		IniFile another = obj as IniFile;
 
 		if (mKeysMap.Count == another.mKeysMap.Count)
 		{
@@ -833,7 +855,7 @@ public class IniFile
 	/// Serves as a hash function for a <see cref="IniFile"/> object.
 	/// </summary>
 	/// <returns>A hash code for this instance that is suitable for use in hashing algorithms and data structures such as a hash table.</returns>
-	public override int GetHashCode ()
+	public override int GetHashCode()
 	{
 		int res = 0;
 
