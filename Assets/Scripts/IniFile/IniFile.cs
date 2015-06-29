@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using UnityEngine;
 
@@ -21,11 +22,42 @@ public class IniFile
     /// <summary>
     /// <see cref="IniFile+KeyPair"/> is used in keys map to keep value and comment for a single key
     /// </summary>
-    private class KeyPair
+    public class KeyPair
     {
-        public string key;
-        public string value;
-        public string comment;
+		/// <summary>
+		/// Gets the key name.
+		/// </summary>
+		/// <value>Key name.</value>
+		public string key
+		{
+			get { return mKey; }
+		}
+
+		/// <summary>
+		/// Gets or sets the value of key.
+		/// </summary>
+		/// <value>Value of key.</value>
+		public string value
+		{
+			get { return mValue;  }
+			set { mValue = value; }
+		}
+
+		/// <summary>
+		/// Gets or sets the comment of key.
+		/// </summary>
+		/// <value>Comment of key.</value>
+		public string comment
+		{
+			get { return mComment;  }
+			set { mComment = value; }
+		}
+
+
+
+        private string mKey;
+		private string mValue;
+		private string mComment;
 
 
 
@@ -33,44 +65,110 @@ public class IniFile
         /// Initializes a new instance of the <see cref="IniFile+KeyPair"/> class.
         /// </summary>
         /// <param name="key">Key name.</param>
-        /// <param name="value">Value for a key.</param>
-        /// <param name="comment">Comment for a key.</param>
+        /// <param name="value">Value of key.</param>
+        /// <param name="comment">Comment of key.</param>
         public KeyPair(string key, string value, string comment)
         {
-            this.key     = key;
-            this.value   = value;
-            this.comment = comment;
+			mKey     = key;
+			mValue   = value;
+			mComment = comment;
         }
     }
 
 
 
 	/// <summary>
-	/// Gets list of keys.
+	/// Gets list of keys in current group.
 	/// </summary>
-	/// <value>List of keys.</returns>
-	public string[] keys
+	/// <value>List of keys in current group.</returns>
+	public ReadOnlyCollection<string> keys
 	{
 		get
 		{
-			string[] res = new string[mKeysList.Count];
-			
-			for (int i = 0; i < mKeysList.Count; ++i)
+			List<string> res = new List<string>();
+
+			if (mCurrentGroup == "")
 			{
-				res[i] = mKeysList[i].key;
+				for (int i = 0; i < mKeysList.Count; ++i)
+				{
+					res.Add(mKeysList[i].key);
+				}
+			}
+			else
+			{
+				int groupNameLength = mCurrentGroup.Length;
+
+				for (int i = 0; i < mKeysList.Count; ++i)
+				{
+					if (mKeysList[i].key.StartsWith(mCurrentGroup))
+					{
+						res.Add(mKeysList[i].key.Substring(groupNameLength));
+					}
+				}
 			}
 			
-			return res;
+			return res.AsReadOnly();
 		}
 	}
 
 	/// <summary>
-	/// Gets amount of properties.
+	/// Gets list of values in current group.
 	/// </summary>
-	/// <value>Amount of properties.</value>
+	/// <value>List of values in current group.</returns>
+	public ReadOnlyCollection<KeyPair> values
+	{
+		get
+		{
+			if (mCurrentGroup == "")
+			{
+				return mKeysList.AsReadOnly();
+			}
+			else
+			{
+				List<KeyPair> res = new List<KeyPair>();
+
+				int groupNameLength = mCurrentGroup.Length;
+				
+				for (int i = 0; i < mKeysList.Count; ++i)
+				{
+					if (mKeysList[i].key.StartsWith(mCurrentGroup))
+					{
+						res.Add(new KeyPair(mKeysList[i].key.Substring(groupNameLength), mKeysList[i].value, mKeysList[i].comment));
+					}
+				}
+
+				return res.AsReadOnly();
+			}
+		}
+	}
+
+	/// <summary>
+	/// Gets amount of properties in current group.
+	/// </summary>
+	/// <value>Amount of properties in current group.</value>
 	public int count
 	{
-		get { return mKeysList.Count; }
+		get 
+		{
+			if (mCurrentGroup == "")
+			{
+				return mKeysList.Count; 
+			}
+			else
+			{
+				int res = 0;
+
+				for (int i = 0; i < mKeysList.Count; ++i)
+				{
+					if (mKeysList[i].key.StartsWith(mCurrentGroup))
+					{
+						++res;
+					}
+				}
+
+				return res;
+			}
+		}
 	}
 
 
@@ -103,7 +201,7 @@ public class IniFile
 	/// <summary>
 	/// Initializes a new instance of the <see cref="IniFile"/> class and load from text asset.
 	/// </summary>
-	/// <param name="asset">Text sset.</param>
+	/// <param name="asset">Text asset for loading.</param>
 	public IniFile(TextAsset asset)
 	{
 		Init();
@@ -270,7 +368,7 @@ public class IniFile
 		else
 		{
 			Debug.LogError("Invalid key name: " + key);
-		}        
+		}
     }
     #endregion
 
@@ -391,6 +489,17 @@ public class IniFile
     }
     #endregion
 
+	/// <summary>
+	/// Remove all properties.
+	/// </summary>
+	public void Clear()
+	{
+		mKeysMap.Clear();
+		mKeysList.Clear();
+		mUsedGroupsList.Clear();
+		mCurrentGroup = "";
+	}
+
     /// <summary>
     /// Remove property by name.
     /// </summary>
@@ -429,6 +538,10 @@ public class IniFile
 				mKeysMap.Add(mCurrentGroup + newKey, outKeyPair);
 				mKeysMap.Remove(mCurrentGroup + key);
 			}
+			else
+			{
+				Debug.LogError("Failed to rename key. There is no key with name: " + key);
+			}
 		}
 		else
 		{
@@ -461,6 +574,8 @@ public class IniFile
         {
             StreamWriter stream = new StreamWriter(Application.persistentDataPath + "/" + fileName + ".ini");
 
+			// TODO: Implement groups
+
             for (int i = 0; i < mKeysList.Count; ++i)
             {
                 if (!mKeysList[i].comment.Equals(""))
@@ -468,7 +583,18 @@ public class IniFile
                     stream.WriteLine("; " + mKeysList[i].comment);
                 }
 
-                stream.WriteLine(mKeysList[i].key + "=" + mKeysList[i].value);
+				if (
+					mKeysList[i].value.Contains(" ")
+					||
+					mKeysList[i].value.Contains("\t")
+				   )
+				{
+					stream.WriteLine(mKeysList[i].key + " = \"" + mKeysList[i].value + "\"");
+				}
+				else
+				{
+					stream.WriteLine(mKeysList[i].key + " = " + mKeysList[i].value);
+				}
             }
 
             stream.Close();
@@ -488,8 +614,7 @@ public class IniFile
 #if USE_PLAYER_PREFS
 	public void Load(string fileName)
     {
-        mKeysMap.Clear();
-        mKeysList.Clear();
+		Clear();
 
         int count = PlayerPrefs.GetInt(fileName + "_Count", 0);
 
@@ -523,19 +648,22 @@ public class IniFile
 #endif
 
 	/// <summary>
-	/// Load properties with specified reader.
+	/// Load properties with specified text reader.
 	/// </summary>
-	/// <param name="reader">Reader.</param>
+	/// <param name="reader">Text reader.</param>
 	private void Load(TextReader reader)
 	{
-		mKeysMap.Clear();
-		mKeysList.Clear();
+		Clear();
 		
 		string line           = "";
 		string currentComment = "";
 
+		// TODO: Implement groups
+
 		while ((line = reader.ReadLine()) != null)
 		{
+			line = line.Trim();
+
 			if (line.StartsWith(";"))
 			{
 				currentComment = line.Substring(1).Trim();
@@ -546,7 +674,15 @@ public class IniFile
 				
 				if (index > 0)
 				{
-					Set(line.Substring(0, index), line.Substring(index + 1), currentComment);
+					string key   = line.Substring(0, index).Trim();
+					string value = line.Substring(index + 1).Trim();
+
+					if (value.Length >= 2 && value[0] == '\"' && value[value.Length - 1] == '\"')
+					{
+						value = value.Substring(1, value.Length - 2);
+					}
+
+					Set(key, value, currentComment);
 					currentComment = "";
 				}
 			}
@@ -556,7 +692,7 @@ public class IniFile
 	/// <summary>
 	/// Load properties from text asset.
 	/// </summary>
-	/// <param name="asset">Asset.</param>
+	/// <param name="asset">Text asset for loading.</param>
 	public void Load(TextAsset asset)
 	{
 		Parse(asset.text);
