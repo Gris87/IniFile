@@ -42,6 +42,67 @@ public class IniFile
 			this.value   = value;
 			this.comment = comment;
         }
+
+		/// <summary>
+		/// Returns a <see cref="System.String"/> that represents the current <see cref="IniFile+KeyPair"/>.
+		/// </summary>
+		/// <returns>A <see cref="System.String"/> that represents the current <see cref="IniFile+KeyPair"/>.</returns>
+		public override string ToString ()
+		{
+			return string.Format ("[KeyPair: key={0}, value={1}, comment={2}]", key, value, comment);
+		}
+
+		/// <summary>
+		/// Determines whether the specified <see cref="System.Object"/> is equal to the current <see cref="IniFile+KeyPair"/>.
+		/// </summary>
+		/// <param name="obj">The <see cref="System.Object"/> to compare with the current <see cref="IniFile+KeyPair"/>.</param>
+		/// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to the current <see cref="IniFile+KeyPair"/>;
+		/// otherwise, <c>false</c>.</returns>
+		public override bool Equals(object obj)
+		{
+			if (obj == null || this == null)
+			{
+				return false;
+			}
+			
+			if (obj == this)
+			{
+				return true;
+			}
+			
+			if (!(obj is KeyPair))
+			{
+				return false;
+			}
+			
+			KeyPair another = obj as KeyPair;
+
+			if (key != another.key)
+			{
+				return false;
+			}
+
+			if (value != another.value)
+			{
+				return false;
+			}
+
+			if (comment != another.comment)
+			{
+				return false;
+			}
+
+			return true;
+		}
+
+		/// <summary>
+		/// Serves as a hash function for a <see cref="IniFile+KeyPair"/> object.
+		/// </summary>
+		/// <returns>A hash code for this instance that is suitable for use in hashing algorithms and data structures such as a hash table.</returns>
+		public override int GetHashCode()
+		{
+			return key.GetHashCode();
+		}
     }
 
 
@@ -469,19 +530,37 @@ public class IniFile
 		mCurrentGroup = "";
 	}
 
-    /// <summary>
-    /// Remove property by name.
-    /// </summary>
-    /// <param name="key">Name of property</param>
-	public void Remove(string key)
+	/// <summary>
+	/// Remove property by name.
+	/// </summary>
+	/// <param name="key">Name of property</param>
+	public bool Remove(string key)
     {
         KeyPair outKeyPair = null;
 
 		if (mKeysMap.TryGetValue(mCurrentGroup + key, out outKeyPair))
         {
-            mKeysList.Remove(outKeyPair);
-			mKeysMap.Remove(mCurrentGroup + key);
+			bool res = true;
+
+			if (!mKeysList.Remove(outKeyPair))
+			{
+				res = false;
+			}
+
+			if (!mKeysMap.Remove(mCurrentGroup + key))
+			{
+				res = false;
+			}
+
+			if (!res)
+			{
+				Debug.LogError("Failed to remove key: " + key);
+			}
+
+			return res;
         }
+
+		return true;
     }
 
     /// <summary>
@@ -489,11 +568,11 @@ public class IniFile
     /// </summary>
     /// <param name="key">Name of property</param>
     /// <param name="newKey">New name of property</param>
-	public void RenameKey(string key, string newKey)
+	public bool RenameKey(string key, string newKey)
     {
         if (key.Equals(newKey))
         {
-            return;
+            return true;
         }
 
 		if (!newKey.Contains("="))
@@ -502,10 +581,18 @@ public class IniFile
 			
 			if (mKeysMap.TryGetValue(mCurrentGroup + key, out outKeyPair))
 			{
-				outKeyPair.key = mCurrentGroup + newKey;
-				
-				mKeysMap.Add(mCurrentGroup + newKey, outKeyPair);
-				mKeysMap.Remove(mCurrentGroup + key);
+				if (mKeysMap.Remove(mCurrentGroup + key))
+				{
+					outKeyPair.key = mCurrentGroup + newKey;
+					
+					mKeysMap.Add(mCurrentGroup + newKey, outKeyPair);
+
+					return true;
+				}
+				else
+				{
+					Debug.LogError("Failed to remove key: " + key);
+				}
 			}
 			else
 			{
@@ -515,7 +602,9 @@ public class IniFile
 		else
 		{
 			Debug.LogError("Invalid key name: " + newKey);
-		}        
+		}
+
+		return false;
     }
 
     /// <summary>
@@ -676,5 +765,83 @@ public class IniFile
 		StringReader reader = new StringReader(text);
 		Load(reader);
 		reader.Close();
+	}
+
+	/// <summary>
+	/// Returns a <see cref="System.String"/> that represents the current <see cref="IniFile"/>.
+	/// </summary>
+	/// <returns>A <see cref="System.String"/> that represents the current <see cref="IniFile"/>.</returns>
+	public override string ToString()
+	{
+		// TODO: Implement
+
+		return "";
+	}
+
+	/// <summary>
+	/// Determines whether the specified <see cref="System.Object"/> is equal to the current <see cref="IniFile"/>.
+	/// </summary>
+	/// <param name="obj">The <see cref="System.Object"/> to compare with the current <see cref="IniFile"/>.</param>
+	/// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to the current <see cref="IniFile"/>; otherwise, <c>false</c>.</returns>
+	public override bool Equals(object obj)
+	{
+		if (obj == null || this == null)
+		{
+			return false;
+		}
+
+		if (obj == this)
+		{
+			return true;
+		}
+
+		if (!(obj is IniFile))
+		{
+			return false;
+		}
+
+		IniFile another = obj as IniFile;
+
+		if (mKeysMap.Count == another.mKeysMap.Count)
+		{
+			foreach (KeyValuePair<string, KeyPair> keyPair in mKeysMap)
+			{
+				KeyPair outKeyPair = null;
+				
+				if (another.mKeysMap.TryGetValue(keyPair.Key, out outKeyPair))
+				{
+					if (!keyPair.Value.Equals(outKeyPair))
+					{
+						return false;
+					}
+				}
+				else
+				{
+					return false;
+				}
+			}
+
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	/// <summary>
+	/// Serves as a hash function for a <see cref="IniFile"/> object.
+	/// </summary>
+	/// <returns>A hash code for this instance that is suitable for use in hashing algorithms and data structures such as a hash table.</returns>
+	public override int GetHashCode ()
+	{
+		int res = 0;
+
+		foreach (KeyValuePair<string, KeyPair> keyPair in mKeysMap)
+		{
+			res = res << 1 + keyPair.Value.GetHashCode();
+		}
+
+		return res;
 	}
 }

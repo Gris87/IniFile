@@ -19,9 +19,30 @@ public class IniFile_DemoScript : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+		Test();
+
         ini = new IniFile("Test");
 		Rebuild();
     }
+
+	private void Assert(bool ok)
+	{
+		if (!ok)
+		{
+			Debug.LogError("Test failed");
+		}
+	}
+
+	private void Test()
+	{
+		IniFile ini1 = new IniFile();
+
+		Assert(ini1.count        == 0);
+		Assert(ini1.keys.Count   == 0);
+		Assert(ini1.values.Count == 0);
+
+		Assert(ini1.ToString() == "");
+	}
 
 	public void Reload()
 	{
