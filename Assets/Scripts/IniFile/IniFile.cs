@@ -24,40 +24,9 @@ public class IniFile
     /// </summary>
     public class KeyPair
     {
-		/// <summary>
-		/// Gets the key name.
-		/// </summary>
-		/// <value>Key name.</value>
-		public string key
-		{
-			get { return mKey; }
-		}
-
-		/// <summary>
-		/// Gets or sets the value of key.
-		/// </summary>
-		/// <value>Value of key.</value>
-		public string value
-		{
-			get { return mValue;  }
-			set { mValue = value; }
-		}
-
-		/// <summary>
-		/// Gets or sets the comment of key.
-		/// </summary>
-		/// <value>Comment of key.</value>
-		public string comment
-		{
-			get { return mComment;  }
-			set { mComment = value; }
-		}
-
-
-
-        private string mKey;
-		private string mValue;
-		private string mComment;
+		public string key;
+		public string value;
+		public string comment;
 
 
 
@@ -67,11 +36,11 @@ public class IniFile
         /// <param name="key">Key name.</param>
         /// <param name="value">Value of key.</param>
         /// <param name="comment">Comment of key.</param>
-        public KeyPair(string key, string value, string comment)
+		public KeyPair(string key, string value, string comment)
         {
-			mKey     = key;
-			mValue   = value;
-			mComment = comment;
+			this.key     = key;
+			this.value   = value;
+			this.comment = comment;
         }
     }
 

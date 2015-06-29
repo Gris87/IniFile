@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -48,9 +49,9 @@ public class IniFile_DemoScript : MonoBehaviour
 
 		float contentHeight = 4f;
 
-		string[] keys = ini.keys;
+		ReadOnlyCollection<string> keys = ini.keys;
 
-		for (int i = 0; i < keys.Length; ++i) 
+		for (int i = 0; i < keys.Count; ++i) 
 		{
 			string key   = keys[i];
 			string value = ini.Get(key);
