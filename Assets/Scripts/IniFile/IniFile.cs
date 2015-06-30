@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Text;
 using UnityEngine;
 
 
@@ -285,6 +286,132 @@ public class IniFile
 	}
 
     #region Set functions
+	/// <summary>
+	/// Set value of property. It will create new property if absent.
+	/// </summary>
+	/// <param name="key">Name of property</param>
+	/// <param name="value">New value</param>
+	public void SetInt(string key, int value)
+	{
+		Set(key, value);
+	}
+
+	/// <summary>
+	/// Set value of property and add comment. It will create new property if absent.
+	/// </summary>
+	/// <param name="key">Name of property</param>
+	/// <param name="value">New value</param>
+	/// <param name="comment">Comment for property</param>
+	public void SetInt(string key, int value, string comment)
+	{
+		Set(key, value, comment);
+	}
+
+	/// <summary>
+	/// Set value of property. It will create new property if absent.
+	/// </summary>
+	/// <param name="key">Name of property</param>
+	/// <param name="value">New value</param>
+	public void SetFloat(string key, float value)
+	{
+		Set(key, value);
+	}
+	
+	/// <summary>
+	/// Set value of property and add comment. It will create new property if absent.
+	/// </summary>
+	/// <param name="key">Name of property</param>
+	/// <param name="value">New value</param>
+	/// <param name="comment">Comment for property</param>
+	public void SetFloat(string key, float value, string comment)
+	{
+		Set(key, value, comment);
+	}
+
+	/// <summary>
+	/// Set value of property. It will create new property if absent.
+	/// </summary>
+	/// <param name="key">Name of property</param>
+	/// <param name="value">New value</param>
+	public void SetDouble(string key, double value)
+	{
+		Set(key, value);
+	}
+	
+	/// <summary>
+	/// Set value of property and add comment. It will create new property if absent.
+	/// </summary>
+	/// <param name="key">Name of property</param>
+	/// <param name="value">New value</param>
+	/// <param name="comment">Comment for property</param>
+	public void SetDouble(string key, double value, string comment)
+	{
+		Set(key, value, comment);
+	}
+
+	/// <summary>
+	/// Set value of property. It will create new property if absent.
+	/// </summary>
+	/// <param name="key">Name of property</param>
+	/// <param name="value">New value</param>
+	public void SetBool(string key, bool value)
+	{
+		Set(key, value);
+	}
+	
+	/// <summary>
+	/// Set value of property and add comment. It will create new property if absent.
+	/// </summary>
+	/// <param name="key">Name of property</param>
+	/// <param name="value">New value</param>
+	/// <param name="comment">Comment for property</param>
+	public void SetBool(string key, bool value, string comment)
+	{
+		Set(key, value, comment);
+	}
+
+	/// <summary>
+	/// Set value of property. It will create new property if absent.
+	/// </summary>
+	/// <param name="key">Name of property</param>
+	/// <param name="value">New value</param>
+	public void SetByteArray(string key, byte[] value)
+	{
+		Set(key, value);
+	}
+	
+	/// <summary>
+	/// Set value of property and add comment. It will create new property if absent.
+	/// </summary>
+	/// <param name="key">Name of property</param>
+	/// <param name="value">New value</param>
+	/// <param name="comment">Comment for property</param>
+	public void SetByteArray(string key, byte[] value, string comment)
+	{
+		Set(key, value, comment);
+	}
+
+	/// <summary>
+	/// Set value of property. It will create new property if absent.
+	/// </summary>
+	/// <param name="key">Name of property</param>
+	/// <param name="value">New value</param>
+	public void SetString(string key, string value)
+	{
+		Set(key, value);
+	}
+	
+	/// <summary>
+	/// Set value of property and add comment. It will create new property if absent.
+	/// </summary>
+	/// <param name="key">Name of property</param>
+	/// <param name="value">New value</param>
+	/// <param name="comment">Comment for property</param>
+	public void SetString(string key, string value, string comment)
+	{
+		Set(key, value, comment);
+	}
+
     /// <summary>
     /// Set value of property. It will create new property if absent.
     /// </summary>
@@ -367,7 +494,75 @@ public class IniFile
 	public void Set(string key, bool value, string comment)
     {
         Set(key, value.ToString(), comment);
-    }
+	}
+
+	/// <summary>
+	/// Set value of property. It will create new property if absent.
+	/// </summary>
+	/// <param name="key">Name of property</param>
+	/// <param name="value">New value</param>
+	public void Set(string key, byte[] value)
+	{
+		Set(key, value, "");
+	}
+	
+	/// <summary>
+	/// Set value of property and add comment. It will create new property if absent.
+	/// </summary>
+	/// <param name="key">Name of property</param>
+	/// <param name="value">New value</param>
+	/// <param name="comment">Comment for property</param>
+	public void Set(string key, byte[] value, string comment)
+	{
+		StringBuilder hex = new StringBuilder(value.Length * 2);
+
+		foreach (byte b in value)
+		{
+			byte high = (byte)(b >> 4);
+			byte low  = (byte)(b & 15);
+
+			if (high < 10)
+			{
+				hex.Append(high);
+			}
+			else
+			{
+				hex.Append((char)('A' + high - 10));
+			}
+
+			if (low < 10)
+			{
+				hex.Append(low);
+			}
+			else
+			{
+				hex.Append((char)('A' + low - 10));
+			}
+		}
+
+		Set(key, hex.ToString(), comment);
+	}
+
+	/// <summary>
+	/// Set value of property. It will create new property if absent.
+	/// </summary>
+	/// <param name="key">Name of property</param>
+	/// <param name="value">New value</param>
+	public void Set(string key, object value)
+	{
+		Set(key, value, "");
+	}
+
+	/// <summary>
+	/// Set value of property and add comment. It will create new property if absent.
+	/// </summary>
+	/// <param name="key">Name of property</param>
+	/// <param name="value">New value</param>
+	/// <param name="comment">Comment for property</param>
+	public void Set(string key, object value, string comment)
+	{
+		Set(key, value.ToString(), comment);
+	}
 
     /// <summary>
     /// Set value of property. It will create new property if absent.
@@ -412,6 +607,72 @@ public class IniFile
     #endregion
 
     #region Get functions
+	/// <summary>
+	/// Returns the value of property.
+	/// </summary>
+	/// <returns>Value of property.</returns>
+	/// <param name="key">Name of property</param>
+	/// <param name="defaultValue">Default value if property absent</param>
+	public int GetInt(string key, int defaultValue = 0)
+	{
+		return Get(key, defaultValue);
+	}
+
+	/// <summary>
+	/// Returns the value of property.
+	/// </summary>
+	/// <returns>Value of property.</returns>
+	/// <param name="key">Name of property</param>
+	/// <param name="defaultValue">Default value if property absent</param>
+	public float GetFloat(string key, float defaultValue = 0f)
+	{
+		return Get(key, defaultValue);
+	}
+
+	/// <summary>
+	/// Returns the value of property.
+	/// </summary>
+	/// <returns>Value of property.</returns>
+	/// <param name="key">Name of property</param>
+	/// <param name="defaultValue">Default value if property absent</param>
+	public double GetDouble(string key, double defaultValue = 0)
+	{
+		return Get(key, defaultValue);
+	}
+
+	/// <summary>
+	/// Returns the value of property.
+	/// </summary>
+	/// <returns>Value of property.</returns>
+	/// <param name="key">Name of property</param>
+	/// <param name="defaultValue">Default value if property absent</param>
+	public bool GetBool(string key, bool defaultValue = false)
+	{
+		return Get(key, defaultValue);
+	}
+
+	/// <summary>
+	/// Returns the value of property.
+	/// </summary>
+	/// <returns>Value of property.</returns>
+	/// <param name="key">Name of property</param>
+	/// <param name="defaultValue">Default value if property absent</param>
+	public byte[] GetByteArray(string key, byte[] defaultValue = null)
+	{
+		return Get(key, defaultValue);
+	}
+
+	/// <summary>
+	/// Returns the value of property.
+	/// </summary>
+	/// <returns>Value of property.</returns>
+	/// <param name="key">Name of property</param>
+	/// <param name="defaultValue">Default value if property absent</param>
+	public string GetString(string key, string defaultValue = "")
+	{
+		return Get(key, defaultValue);
+	}
+
     /// <summary>
     /// Returns the value of property.
     /// </summary>
@@ -491,6 +752,44 @@ public class IniFile
             return defaultValue;
         }
     }
+
+	/// <summary>
+	/// Returns the value of property.
+	/// </summary>
+	/// <returns>Value of property.</returns>
+	/// <param name="key">Name of property</param>
+	/// <param name="defaultValue">Default value if property absent</param>
+	public byte[] Get(string key, byte[] defaultValue)
+	{
+		string value = Get(key);
+		
+		try
+		{
+			int numberOfChars = value.Length;
+
+			if (
+				numberOfChars <= 0
+				||
+				numberOfChars % 2 == 1
+			   )
+			{
+				return defaultValue;
+			}
+
+			byte[] bytes = new byte[numberOfChars / 2];
+
+			for (int i = 0; i < numberOfChars; i += 2)
+			{
+				bytes[i >> 1] = Convert.ToByte(value.Substring(i, 2), 16);
+			}
+
+			return bytes;
+		}
+		catch(Exception)
+		{
+			return defaultValue;
+		}
+	}
 
     /// <summary>
     /// Returns the value of property.
@@ -593,7 +892,8 @@ public class IniFile
 				if (mKeysMap.Remove(mCurrentGroup + key))
 				{
 					outKeyPair.key = mCurrentGroup + newKey;
-					
+
+					Remove(newKey);
 					mKeysMap.Add(mCurrentGroup + newKey, outKeyPair);
 
 					return true;
@@ -635,13 +935,14 @@ public class IniFile
 #else
 	public void Save(string fileName)
     {
-        // Debug.Log("Save properties to file: " + Application.persistentDataPath + "/" + fileName + ".ini");
+		string filePath = Application.persistentDataPath + "/" + fileName + ".ini";
+		// Debug.Log("Save properties to file: " + filePath);
 
         try
         {
-            StreamWriter writer = new StreamWriter(Application.persistentDataPath + "/" + fileName + ".ini");
+			StreamWriter writer = new StreamWriter(filePath);
 			Save(writer);
-            stream.Close();
+			writer.Close();
         }
         catch(IOException e)
         {
@@ -655,28 +956,57 @@ public class IniFile
 	/// Save properties with specified text writer.
 	/// </summary>
 	/// <param name="writer">Text writer.</param>
-	private void Save(TextWriter writer)
+	public void Save(TextWriter writer)
 	{
-		// TODO: Implement groups
-		
+		bool   firstLine    = true;
+		string currentGroup = "";
+
 		for (int i = 0; i < mKeysList.Count; ++i)
 		{
-			if (!mKeysList[i].comment.Equals(""))
+			string group   = "";
+			string key     = mKeysList[i].key;
+			string value   = mKeysList[i].value;
+			string comment = mKeysList[i].comment;
+
+			int index = key.LastIndexOf("/");
+
+			if (index >= 0)
 			{
-				writer.WriteLine("; " + mKeysList[i].comment);
+				group = key.Substring(0, index);
+				key   = key.Substring(index + 1);
+			}
+
+			if (currentGroup != group)
+			{
+				currentGroup = group;
+
+				if (!firstLine)
+				{
+					writer.WriteLine();
+				}
+
+				writer.WriteLine("[" + currentGroup + "]");
+				writer.WriteLine();
+			}
+
+			firstLine = false;
+
+			if (!comment.Equals(""))
+			{
+				writer.WriteLine("; " + comment);
 			}
 			
 			if (
-				mKeysList[i].value.Contains(" ")
+				value.Contains(" ")
 				||
-				mKeysList[i].value.Contains("\t")
-				)
+				value.Contains("\t")
+			   )
 			{
-				writer.WriteLine(mKeysList[i].key + " = \"" + mKeysList[i].value + "\"");
+				writer.WriteLine(key + " = \"" + value + "\"");
 			}
 			else
 			{
-				writer.WriteLine(mKeysList[i].key + " = " + mKeysList[i].value);
+				writer.WriteLine(key + " = " + value);
 			}
 		}
 	}
@@ -704,11 +1034,13 @@ public class IniFile
 #else
     public void Load(string fileName)
     {
-        if (File.Exists(Application.persistentDataPath + "/" + fileName + ".ini"))
+		string filePath = Application.persistentDataPath + "/" + fileName + ".ini";
+
+		if (File.Exists(filePath))
         {
             try
             {
-                StreamReader reader = new StreamReader(Application.persistentDataPath + "/" + fileName + ".ini");
+				StreamReader reader = new StreamReader(filePath);
 				Load(reader);
                 reader.Close();
             }
@@ -722,23 +1054,51 @@ public class IniFile
 #endif
 
 	/// <summary>
+	/// Load properties from text asset.
+	/// </summary>
+	/// <param name="asset">Text asset for loading.</param>
+	public void Load(TextAsset asset)
+	{
+		Parse(asset.text);
+	}
+
+	/// <summary>
 	/// Load properties with specified text reader.
 	/// </summary>
 	/// <param name="reader">Text reader.</param>
-	private void Load(TextReader reader)
+	public void Load(TextReader reader)
 	{
 		Clear();
 		
 		string line           = "";
 		string currentComment = "";
 
-		// TODO: Implement groups
-
 		while ((line = reader.ReadLine()) != null)
 		{
 			line = line.Trim();
 
-			if (line.StartsWith(";"))
+			if (line.StartsWith("["))
+			{
+				if (line.EndsWith("]"))
+				{
+					mCurrentGroup = line.Substring(1, line.Length - 2);
+
+					if (mCurrentGroup != "")
+					{
+						mCurrentGroup += "/";
+					}
+				}
+				else
+				{
+					Debug.LogError("Trailing ']' character not found in line: " + line);
+				}
+			}
+			else
+			if (
+				line.StartsWith(";")
+				||
+				line.StartsWith("#")
+			   )
 			{
 				currentComment = line.Substring(1).Trim();
 			}
@@ -761,15 +1121,8 @@ public class IniFile
 				}
 			}
 		}
-	}
 
-	/// <summary>
-	/// Load properties from text asset.
-	/// </summary>
-	/// <param name="asset">Text asset for loading.</param>
-	public void Load(TextAsset asset)
-	{
-		Parse(asset.text);
+		mCurrentGroup = "";
 	}
 
 	/// <summary>
@@ -861,7 +1214,7 @@ public class IniFile
 
 		foreach (KeyValuePair<string, KeyPair> keyPair in mKeysMap)
 		{
-			res = res << 1 + keyPair.Value.GetHashCode();
+			res += keyPair.Value.GetHashCode();
 		}
 
 		return res;
