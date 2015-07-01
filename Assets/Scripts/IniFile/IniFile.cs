@@ -828,6 +828,16 @@ public class IniFile
     #endregion
 
 	/// <summary>
+	/// Determines whether the <see cref="IniFile"/> contains the specified key in current group.
+	/// </summary>
+	/// <returns><c>true</c>, if <see cref="IniFile"/> contains the specified key in current group, <c>false</c> otherwise.</returns>
+	/// <param name="key">Key.</param>
+	public bool ContainsKey(string key)
+	{
+		return mKeysMap.ContainsKey(mCurrentGroup + key);
+	}
+
+	/// <summary>
 	/// Remove all properties.
 	/// </summary>
 	public void Clear()
