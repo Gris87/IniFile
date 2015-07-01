@@ -997,9 +997,13 @@ public class IniFile
 			}
 			
 			if (
-				value.Contains(" ")
+				value.StartsWith(" ")
 				||
-				value.Contains("\t")
+				value.StartsWith("\t")
+				||
+				value.EndsWith(" ")
+				||
+				value.EndsWith("\t")
 			   )
 			{
 				writer.WriteLine(key + " = \"" + value + "\"");
