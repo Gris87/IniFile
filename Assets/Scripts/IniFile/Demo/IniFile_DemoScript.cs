@@ -370,6 +370,13 @@ public class IniFile_DemoScript : MonoBehaviour
 		AssertEqual(testIni1, testIni2);
 		#endregion
 		
+        // ---------------------------------------------------------------------------------
+        
+        #region IniFile ContainsKey function
+        AssertEqual(testIni1.ContainsKey("Key 1"),   true);
+        AssertEqual(testIni1.ContainsKey("Nothing"), false);
+        #endregion
+
 		// ---------------------------------------------------------------------------------
 		
 		#region IniFile Remove function
@@ -832,7 +839,7 @@ public class IniFile_DemoScript : MonoBehaviour
 		
         // ---------------------------------------------------------------------------------
         
-        #region IniFile Get function
+        #region IniFile ContainsKey function
         AssertEqual(testIni1.ContainsKey("Key 1"),   true);
         AssertEqual(testIni1.ContainsKey("Nothing"), false);
         
