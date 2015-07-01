@@ -190,8 +190,8 @@ public class IniFile_DemoScript : MonoBehaviour
 		testIni1.Set("Key 10", testBytes, "Comment 10");
 		testIni1.Set("Key 11", testPair);
 		testIni1.Set("Key 12", testPair,  "Comment 12");
-		testIni1.Set("Key 13", "Hello");
-		testIni1.Set("Key 14", "World",   "Comment 14");
+		testIni1.Set("Key 13", " Hello");
+		testIni1.Set("Key 14", "World ",  "Comment 14");
 		
 		
 		
@@ -221,8 +221,8 @@ public class IniFile_DemoScript : MonoBehaviour
 		AssertEqual(values[9].value,  "010204080F235DA7D8");
 		AssertEqual(values[10].value, "[KeyPair: key=1, value=2, comment=3]");
 		AssertEqual(values[11].value, "[KeyPair: key=1, value=2, comment=3]");
-		AssertEqual(values[12].value, "Hello");
-		AssertEqual(values[13].value, "World");
+		AssertEqual(values[12].value, " Hello");
+		AssertEqual(values[13].value, "World ");
 		
 		AssertEqual(values[0].comment,  "");
 		AssertEqual(values[1].comment,  "Comment 2");
@@ -240,27 +240,27 @@ public class IniFile_DemoScript : MonoBehaviour
 		AssertEqual(values[13].comment, "Comment 14");
 		
 		AssertEqual(testIni1.ToString(), 
-		            "Key 1 = 1\n"                                         +
-		            "; Comment 2\n"                                       +
-		            "Key 2 = 2\n"                                         +
-		            "Key 3 = 0.1\n"                                       +
-		            "; Comment 4\n"                                       +
-		            "Key 4 = 0.2\n"                                       +
-		            "Key 5 = 0.1\n"                                       +
-		            "; Comment 6\n"                                       +
-		            "Key 6 = 0.2\n"                                       +
-		            "Key 7 = True\n"                                      +
-		            "; Comment 8\n"                                       +
-		            "Key 8 = False\n"                                     +
-		            "Key 9 = 010204080F235DA7D8\n"                        +
-		            "; Comment 10\n"                                      +
-		            "Key 10 = 010204080F235DA7D8\n"                       +
-		            "Key 11 = \"[KeyPair: key=1, value=2, comment=3]\"\n" +
-		            "; Comment 12\n"                                      +
-		            "Key 12 = \"[KeyPair: key=1, value=2, comment=3]\"\n" +
-		            "Key 13 = Hello\n"                                    +
-		            "; Comment 14\n"                                      +
-		            "Key 14 = World\n");
+		            "Key 1 = 1\n"                                     +
+		            "; Comment 2\n"                                   +
+		            "Key 2 = 2\n"                                     +
+		            "Key 3 = 0.1\n"                                   +
+		            "; Comment 4\n"                                   +
+		            "Key 4 = 0.2\n"                                   +
+		            "Key 5 = 0.1\n"                                   +
+		            "; Comment 6\n"                                   +
+		            "Key 6 = 0.2\n"                                   +
+		            "Key 7 = True\n"                                  +
+		            "; Comment 8\n"                                   +
+		            "Key 8 = False\n"                                 +
+		            "Key 9 = 010204080F235DA7D8\n"                    +
+		            "; Comment 10\n"                                  +
+		            "Key 10 = 010204080F235DA7D8\n"                   +
+		            "Key 11 = [KeyPair: key=1, value=2, comment=3]\n" +
+		            "; Comment 12\n"                                  +
+		            "Key 12 = [KeyPair: key=1, value=2, comment=3]\n" +
+		            "Key 13 = \" Hello\"\n"                           +
+		            "; Comment 14\n"                                  +
+		            "Key 14 = \"World \"\n");
 		
 		testIni2.Parse(testIni1.ToString());
 		AssertEqual(testIni1, testIni2);
@@ -292,9 +292,9 @@ public class IniFile_DemoScript : MonoBehaviour
 		AssertEqual(testIni1.Get("Key 11"), "[KeyPair: key=1, value=2, comment=3]");
 		AssertEqual(testIni1.Get("Key 12"), "[KeyPair: key=1, value=2, comment=3]");
 		
-		AssertEqual(testIni1.Get("Key 13",  "World"), "Hello");
+		AssertEqual(testIni1.Get("Key 13",  "World"), " Hello");
 		AssertEqual(testIni1.Get("Nothing", "Test"),  "Test");
-		AssertEqual(testIni1.Get("Key 14"),           "World");
+		AssertEqual(testIni1.Get("Key 14"),           "World ");
 		AssertEqual(testIni1.Get("Nothing"),          "");
 		
 		
@@ -325,8 +325,8 @@ public class IniFile_DemoScript : MonoBehaviour
 		AssertEqual(values[9].value,  "010204080F235DA7D8");
 		AssertEqual(values[10].value, "[KeyPair: key=1, value=2, comment=3]");
 		AssertEqual(values[11].value, "[KeyPair: key=1, value=2, comment=3]");
-		AssertEqual(values[12].value, "Hello");
-		AssertEqual(values[13].value, "World");
+		AssertEqual(values[12].value, " Hello");
+		AssertEqual(values[13].value, "World ");
 		
 		AssertEqual(values[0].comment,  "");
 		AssertEqual(values[1].comment,  "Comment 2");
@@ -344,27 +344,27 @@ public class IniFile_DemoScript : MonoBehaviour
 		AssertEqual(values[13].comment, "Comment 14");
 		
 		AssertEqual(testIni1.ToString(), 
-		            "Key 1 = 1\n"                                         +
-		            "; Comment 2\n"                                       +
-		            "Key 2 = 2\n"                                         +
-		            "Key 3 = 0.1\n"                                       +
-		            "; Comment 4\n"                                       +
-		            "Key 4 = 0.2\n"                                       +
-		            "Key 5 = 0.1\n"                                       +
-		            "; Comment 6\n"                                       +
-		            "Key 6 = 0.2\n"                                       +
-		            "Key 7 = True\n"                                      +
-		            "; Comment 8\n"                                       +
-		            "Key 8 = False\n"                                     +
-		            "Key 9 = 010204080F235DA7D8\n"                        +
-		            "; Comment 10\n"                                      +
-		            "Key 10 = 010204080F235DA7D8\n"                       +
-		            "Key 11 = \"[KeyPair: key=1, value=2, comment=3]\"\n" +
-		            "; Comment 12\n"                                      +
-		            "Key 12 = \"[KeyPair: key=1, value=2, comment=3]\"\n" +
-		            "Key 13 = Hello\n"                                    +
-		            "; Comment 14\n"                                      +
-		            "Key 14 = World\n");
+		            "Key 1 = 1\n"                                     +
+		            "; Comment 2\n"                                   +
+		            "Key 2 = 2\n"                                     +
+		            "Key 3 = 0.1\n"                                   +
+		            "; Comment 4\n"                                   +
+		            "Key 4 = 0.2\n"                                   +
+		            "Key 5 = 0.1\n"                                   +
+		            "; Comment 6\n"                                   +
+		            "Key 6 = 0.2\n"                                   +
+		            "Key 7 = True\n"                                  +
+		            "; Comment 8\n"                                   +
+		            "Key 8 = False\n"                                 +
+		            "Key 9 = 010204080F235DA7D8\n"                    +
+		            "; Comment 10\n"                                  +
+		            "Key 10 = 010204080F235DA7D8\n"                   +
+		            "Key 11 = [KeyPair: key=1, value=2, comment=3]\n" +
+		            "; Comment 12\n"                                  +
+		            "Key 12 = [KeyPair: key=1, value=2, comment=3]\n" +
+		            "Key 13 = \" Hello\"\n"                          +
+		            "; Comment 14\n"                                  +
+		            "Key 14 = \"World \"\n");
 		
 		testIni2.Parse(testIni1.ToString());
 		AssertEqual(testIni1, testIni2);
@@ -422,7 +422,7 @@ public class IniFile_DemoScript : MonoBehaviour
 		AssertEqual(values[7].value,  "010204080F235DA7D8");
 		AssertEqual(values[8].value,  "[KeyPair: key=1, value=2, comment=3]");
 		AssertEqual(values[9].value,  "[KeyPair: key=1, value=2, comment=3]");
-		AssertEqual(values[10].value, "Hello");
+		AssertEqual(values[10].value, " Hello");
 		
 		AssertEqual(values[0].comment,  "Comment 2");
 		AssertEqual(values[1].comment,  "");
@@ -437,23 +437,23 @@ public class IniFile_DemoScript : MonoBehaviour
 		AssertEqual(values[10].comment, "");
 		
 		AssertEqual(testIni1.ToString(), 
-		            "; Comment 2\n"                                       +
-		            "Key 2 = 2\n"                                         +
-		            "Key 3 = 0.1\n"                                       +
-		            "; Comment 4\n"                                       +
-		            "Key 4 = 0.2\n"                                       +
-		            "Key 5 = 0.1\n"                                       +
-		            "; Comment 6\n"                                       +
-		            "Key 6 = 0.2\n"                                       +
-		            "; Comment 8\n"                                       +
-		            "Key 8 = False\n"                                     +
-		            "Key 9 = 010204080F235DA7D8\n"                        +
-		            "; Comment 10\n"                                      +
-		            "Key 10 = 010204080F235DA7D8\n"                       +
-		            "Key 11 = \"[KeyPair: key=1, value=2, comment=3]\"\n" +
-		            "; Comment 12\n"                                      +
-		            "Key 12 = \"[KeyPair: key=1, value=2, comment=3]\"\n" +
-		            "Key 13 = Hello\n");
+		            "; Comment 2\n"                                   +
+		            "Key 2 = 2\n"                                     +
+		            "Key 3 = 0.1\n"                                   +
+		            "; Comment 4\n"                                   +
+		            "Key 4 = 0.2\n"                                   +
+		            "Key 5 = 0.1\n"                                   +
+		            "; Comment 6\n"                                   +
+		            "Key 6 = 0.2\n"                                   +
+		            "; Comment 8\n"                                   +
+		            "Key 8 = False\n"                                 +
+		            "Key 9 = 010204080F235DA7D8\n"                    +
+		            "; Comment 10\n"                                  +
+		            "Key 10 = 010204080F235DA7D8\n"                   +
+		            "Key 11 = [KeyPair: key=1, value=2, comment=3]\n" +
+		            "; Comment 12\n"                                  +
+		            "Key 12 = [KeyPair: key=1, value=2, comment=3]\n" +
+                    "Key 13 = \" Hello\"\n");
 		
 		testIni2.Parse(testIni1.ToString());
 		AssertEqual(testIni1, testIni2);
@@ -507,7 +507,7 @@ public class IniFile_DemoScript : MonoBehaviour
 		AssertEqual(values[6].value, "010204080F235DA7D8");
 		AssertEqual(values[7].value, "[KeyPair: key=1, value=2, comment=3]");
 		AssertEqual(values[8].value, "[KeyPair: key=1, value=2, comment=3]");
-		AssertEqual(values[9].value, "Hello");
+		AssertEqual(values[9].value, " Hello");
 		
 		AssertEqual(values[0].comment, "Comment 2");
 		AssertEqual(values[1].comment, "");
@@ -521,21 +521,21 @@ public class IniFile_DemoScript : MonoBehaviour
 		AssertEqual(values[9].comment, "");
 		
 		AssertEqual(testIni1.ToString(), 
-		            "; Comment 2\n"                                       +
-		            "Key 1 = 2\n"                                         +
-		            "Key 3 = 0.1\n"                                       +
-		            "; Comment 4\n"                                       +
-		            "Key 6 = 0.2\n"                                       +
-		            "Key 5 = 0.1\n"                                       +
-		            "; Comment 8\n"                                       +
-		            "Key 8 = False\n"                                     +
-		            "Key 9 = 010204080F235DA7D8\n"                        +
-		            "; Comment 10\n"                                      +
-		            "Key 10 = 010204080F235DA7D8\n"                       +
-		            "Key 11 = \"[KeyPair: key=1, value=2, comment=3]\"\n" +
-		            "; Comment 12\n"                                      +
-		            "Key 12 = \"[KeyPair: key=1, value=2, comment=3]\"\n" +
-		            "Key 13 = Hello\n");
+		            "; Comment 2\n"                                   +
+		            "Key 1 = 2\n"                                     +
+		            "Key 3 = 0.1\n"                                   +
+		            "; Comment 4\n"                                   +
+		            "Key 6 = 0.2\n"                                   +
+		            "Key 5 = 0.1\n"                                   +
+		            "; Comment 8\n"                                   +
+		            "Key 8 = False\n"                                 +
+		            "Key 9 = 010204080F235DA7D8\n"                    +
+		            "; Comment 10\n"                                  +
+		            "Key 10 = 010204080F235DA7D8\n"                   +
+		            "Key 11 = [KeyPair: key=1, value=2, comment=3]\n" +
+		            "; Comment 12\n"                                  +
+		            "Key 12 = [KeyPair: key=1, value=2, comment=3]\n" +
+                    "Key 13 = \" Hello\"\n");
 		
 		testIni2.Parse(testIni1.ToString());
 		AssertEqual(testIni1, testIni2);
@@ -627,7 +627,7 @@ public class IniFile_DemoScript : MonoBehaviour
 		AssertEqual(testIni1.values.Count, 6);
 		AssertEqual(testIni1.currentGroup, "");
 		
-		testIni1.SetString("Group 2/Subgroup 2/Key 7", "Hello World!");
+		testIni1.SetString("Group 2/Subgroup 2/Key 7", "Hello World!\t");
 		
 		//testIni1.EndGroup(); // To check for error
 		
@@ -661,7 +661,7 @@ public class IniFile_DemoScript : MonoBehaviour
 		AssertEqual(values[3].value, "True");
 		AssertEqual(values[4].value, "010204080F235DA7D8");
 		AssertEqual(values[5].value, "[KeyPair: key=1, value=2, comment=3]");
-		AssertEqual(values[6].value, "Hello World!");
+		AssertEqual(values[6].value, "Hello World!\t");
 		
 		testIni1.BeginGroup("Group 1");
 		
@@ -688,28 +688,28 @@ public class IniFile_DemoScript : MonoBehaviour
 		testIni1.EndGroup();
 		
 		AssertEqual(testIni1.ToString(), 
-		            "Key 1 = 1\n"                                        +
-		            "\n"                                                 +
-		            "[Group 1]\n"                                        +
-		            "\n"                                                 +
-		            "Key 2 = 0.2\n"                                      +
-		            "\n"                                                 +
-		            "[Group 1/Subgroup 1]\n"                             +
-		            "\n"                                                 +
-		            "Key 3 = 0.3\n"                                      +
-		            "Key 4 = True\n"                                     +
-		            "\n"                                                 +
-		            "[Group 2]\n"                                        +
-		            "\n"                                                 +
-		            "Key 5 = 010204080F235DA7D8\n"                       +
-		            "\n"                                                 +
-		            "[Group 2/Subgroup 1]\n"                             +
-		            "\n"                                                 +
-		            "Key 6 = \"[KeyPair: key=1, value=2, comment=3]\"\n" +
-		            "\n"                                                 +
-		            "[Group 2/Subgroup 2]\n"                             +
-		            "\n"                                                 +
-		            "Key 7 = \"Hello World!\"\n");
+		            "Key 1 = 1\n"                                    +
+		            "\n"                                             +
+		            "[Group 1]\n"                                    +
+		            "\n"                                             +
+		            "Key 2 = 0.2\n"                                  +
+		            "\n"                                             +
+		            "[Group 1/Subgroup 1]\n"                         +
+		            "\n"                                             +
+		            "Key 3 = 0.3\n"                                  +
+		            "Key 4 = True\n"                                 +
+		            "\n"                                             +
+		            "[Group 2]\n"                                    +
+		            "\n"                                             +
+		            "Key 5 = 010204080F235DA7D8\n"                   +
+		            "\n"                                             +
+		            "[Group 2/Subgroup 1]\n"                         +
+		            "\n"                                             +
+		            "Key 6 = [KeyPair: key=1, value=2, comment=3]\n" +
+		            "\n"                                             +
+		            "[Group 2/Subgroup 2]\n"                         +
+		            "\n"                                             +
+		            "Key 7 = \"Hello World!\t\"\n");
 		
 		testIni2.Parse(testIni1.ToString());
 		AssertEqual(testIni1, testIni2);
@@ -741,7 +741,7 @@ public class IniFile_DemoScript : MonoBehaviour
 		AssertEqual(testIni1.Get("Group 2/Subgroup 1/Key 6"),   "[KeyPair: key=1, value=2, comment=3]");
 		AssertEqual(testIni1.Get("Group 2/Subgroup 1/Nothing"), "");		
 		
-		AssertEqual(testIni1.GetString("Group 2/Subgroup 2/Key 7"),            "Hello World!");
+		AssertEqual(testIni1.GetString("Group 2/Subgroup 2/Key 7"),            "Hello World!\t");
 		AssertEqual(testIni1.GetString("Group 2/Subgroup 2/Nothing", "Yahoo"), "Yahoo");
 		
 		
@@ -776,7 +776,7 @@ public class IniFile_DemoScript : MonoBehaviour
 		AssertEqual(values[3].value, "True");
 		AssertEqual(values[4].value, "010204080F235DA7D8");
 		AssertEqual(values[5].value, "[KeyPair: key=1, value=2, comment=3]");
-		AssertEqual(values[6].value, "Hello World!");
+		AssertEqual(values[6].value, "Hello World!\t");
 		
 		testIni1.BeginGroup("Group 1");
 		
@@ -803,33 +803,63 @@ public class IniFile_DemoScript : MonoBehaviour
 		testIni1.EndGroup();
 		
 		AssertEqual(testIni1.ToString(), 
-		            "Key 1 = 1\n"                                        +
-		            "\n"                                                 +
-		            "[Group 1]\n"                                        +
-		            "\n"                                                 +
-		            "Key 2 = 0.2\n"                                      +
-		            "\n"                                                 +
-		            "[Group 1/Subgroup 1]\n"                             +
-		            "\n"                                                 +
-		            "Key 3 = 0.3\n"                                      +
-		            "Key 4 = True\n"                                     +
-		            "\n"                                                 +
-		            "[Group 2]\n"                                        +
-		            "\n"                                                 +
-		            "Key 5 = 010204080F235DA7D8\n"                       +
-		            "\n"                                                 +
-		            "[Group 2/Subgroup 1]\n"                             +
-		            "\n"                                                 +
-		            "Key 6 = \"[KeyPair: key=1, value=2, comment=3]\"\n" +
-		            "\n"                                                 +
-		            "[Group 2/Subgroup 2]\n"                             +
-		            "\n"                                                 +
-		            "Key 7 = \"Hello World!\"\n");
+		            "Key 1 = 1\n"                                    +
+		            "\n"                                             +
+		            "[Group 1]\n"                                    +
+		            "\n"                                             +
+		            "Key 2 = 0.2\n"                                  +
+		            "\n"                                             +
+		            "[Group 1/Subgroup 1]\n"                         +
+		            "\n"                                             +
+		            "Key 3 = 0.3\n"                                  +
+		            "Key 4 = True\n"                                 +
+		            "\n"                                             +
+		            "[Group 2]\n"                                    +
+		            "\n"                                             +
+		            "Key 5 = 010204080F235DA7D8\n"                   +
+		            "\n"                                             +
+		            "[Group 2/Subgroup 1]\n"                         +
+		            "\n"                                             +
+		            "Key 6 = [KeyPair: key=1, value=2, comment=3]\n" +
+		            "\n"                                             +
+		            "[Group 2/Subgroup 2]\n"                         +
+		            "\n"                                             +
+		            "Key 7 = \"Hello World!\t\"\n");
 		
 		testIni2.Parse(testIni1.ToString());
 		AssertEqual(testIni1, testIni2);
 		#endregion
 		
+        // ---------------------------------------------------------------------------------
+        
+        #region IniFile Get function
+        AssertEqual(testIni1.ContainsKey("Key 1"),   true);
+        AssertEqual(testIni1.ContainsKey("Nothing"), false);
+        
+        testIni1.BeginGroup("Group 1");
+        AssertEqual(testIni1.ContainsKey("Key 2"),   true);
+        AssertEqual(testIni1.ContainsKey("Nothing"), false);
+        
+        testIni1.BeginGroup("Subgroup 1");
+        AssertEqual(testIni1.ContainsKey("Key 3"),   true);
+        AssertEqual(testIni1.ContainsKey("Nothing"), false);
+        testIni1.EndGroup();
+        
+        AssertEqual(testIni1.ContainsKey("Subgroup 1/Key 4"),   true);
+        AssertEqual(testIni1.ContainsKey("Subgroup 1/Nothing"), false);
+        
+        testIni1.EndGroup();
+        
+        AssertEqual(testIni1.ContainsKey("Group 2/Key 5"),   true);
+        AssertEqual(testIni1.ContainsKey("Group 2/Nothing"), false);
+        
+        AssertEqual(testIni1.ContainsKey("Group 2/Subgroup 1/Key 6"),  true);
+        AssertEqual(testIni1.ContainsKey("Group 2/Subgroup 1/Nothing"), false);        
+        
+        AssertEqual(testIni1.ContainsKey("Group 2/Subgroup 2/Key 7"),   true);
+        AssertEqual(testIni1.ContainsKey("Group 2/Subgroup 2/Nothing"), false);
+        #endregion
+
 		// ---------------------------------------------------------------------------------
 		
 		#region IniFile Save/Load functions
@@ -870,7 +900,7 @@ public class IniFile_DemoScript : MonoBehaviour
 		AssertEqual(values[3].value, "True");
 		AssertEqual(values[4].value, "010204080F235DA7D8");
 		AssertEqual(values[5].value, "[KeyPair: key=1, value=2, comment=3]");
-		AssertEqual(values[6].value, "Hello World!");
+		AssertEqual(values[6].value, "Hello World!\t");
 		
 		testIni1.BeginGroup("Group 1");
 		
@@ -897,28 +927,28 @@ public class IniFile_DemoScript : MonoBehaviour
 		testIni1.EndGroup();
 		
 		AssertEqual(testIni1.ToString(), 
-		            "Key 1 = 1\n"                                        +
-		            "\n"                                                 +
-		            "[Group 1]\n"                                        +
-		            "\n"                                                 +
-		            "Key 2 = 0.2\n"                                      +
-		            "\n"                                                 +
-		            "[Group 1/Subgroup 1]\n"                             +
-		            "\n"                                                 +
-		            "Key 3 = 0.3\n"                                      +
-		            "Key 4 = True\n"                                     +
-		            "\n"                                                 +
-		            "[Group 2]\n"                                        +
-		            "\n"                                                 +
-		            "Key 5 = 010204080F235DA7D8\n"                       +
-		            "\n"                                                 +
-		            "[Group 2/Subgroup 1]\n"                             +
-		            "\n"                                                 +
-		            "Key 6 = \"[KeyPair: key=1, value=2, comment=3]\"\n" +
-		            "\n"                                                 +
-		            "[Group 2/Subgroup 2]\n"                             +
-		            "\n"                                                 +
-		            "Key 7 = \"Hello World!\"\n");
+		            "Key 1 = 1\n"                                    +
+		            "\n"                                             +
+		            "[Group 1]\n"                                    +
+		            "\n"                                             +
+		            "Key 2 = 0.2\n"                                  +
+		            "\n"                                             +
+		            "[Group 1/Subgroup 1]\n"                         +
+		            "\n"                                             +
+		            "Key 3 = 0.3\n"                                  +
+		            "Key 4 = True\n"                                 +
+		            "\n"                                             +
+		            "[Group 2]\n"                                    +
+		            "\n"                                             +
+		            "Key 5 = 010204080F235DA7D8\n"                   +
+		            "\n"                                             +
+		            "[Group 2/Subgroup 1]\n"                         +
+		            "\n"                                             +
+		            "Key 6 = [KeyPair: key=1, value=2, comment=3]\n" +
+		            "\n"                                             +
+		            "[Group 2/Subgroup 2]\n"                         +
+		            "\n"                                             +
+		            "Key 7 = \"Hello World!\t\"\n");
 		
 		testIni2.Parse(testIni1.ToString());
 		AssertEqual(testIni1, testIni2);
@@ -959,7 +989,7 @@ public class IniFile_DemoScript : MonoBehaviour
 		AssertEqual(values[1].value, "0.3");
 		AssertEqual(values[2].value, "True");
 		AssertEqual(values[3].value, "[KeyPair: key=1, value=2, comment=3]");
-		AssertEqual(values[4].value, "Hello World!");
+		AssertEqual(values[4].value, "Hello World!\t");
 		
 		testIni1.BeginGroup("Group 2");
 		
@@ -978,27 +1008,27 @@ public class IniFile_DemoScript : MonoBehaviour
 		AssertEqual(values[1].key, "Subgroup 2/Key 7");
 		
 		AssertEqual(values[0].value, "[KeyPair: key=1, value=2, comment=3]");
-		AssertEqual(values[1].value, "Hello World!");
+		AssertEqual(values[1].value, "Hello World!\t");
 		
 		testIni1.EndGroup();
 		
 		AssertEqual(testIni1.ToString(), 
-		            "[Group 1]\n"                                        +
-		            "\n"                                                 +
-		            "Key 2 = 0.2\n"                                      +
-		            "\n"                                                 +
-		            "[Group 1/Subgroup 1]\n"                             +
-		            "\n"                                                 +
-		            "Key 3 = 0.3\n"                                      +
-		            "Key 4 = True\n"                                     +
-		            "\n"                                                 +
-		            "[Group 2/Subgroup 1]\n"                             +
-		            "\n"                                                 +
-		            "Key 6 = \"[KeyPair: key=1, value=2, comment=3]\"\n" +
-		            "\n"                                                 +
-		            "[Group 2/Subgroup 2]\n"                             +
-		            "\n"                                                 +
-		            "Key 7 = \"Hello World!\"\n");
+		            "[Group 1]\n"                                    +
+		            "\n"                                             +
+		            "Key 2 = 0.2\n"                                  +
+		            "\n"                                             +
+		            "[Group 1/Subgroup 1]\n"                         +
+		            "\n"                                             +
+		            "Key 3 = 0.3\n"                                  +
+		            "Key 4 = True\n"                                 +
+		            "\n"                                             +
+		            "[Group 2/Subgroup 1]\n"                         +
+		            "\n"                                             +
+		            "Key 6 = [KeyPair: key=1, value=2, comment=3]\n" +
+		            "\n"                                             +
+		            "[Group 2/Subgroup 2]\n"                         +
+		            "\n"                                             +
+		            "Key 7 = \"Hello World!\t\"\n");
 		
 		testIni2.Parse(testIni1.ToString());
 		AssertEqual(testIni1, testIni2);
@@ -1036,7 +1066,7 @@ public class IniFile_DemoScript : MonoBehaviour
 		AssertEqual(values[0].value, "0.2");
 		AssertEqual(values[1].value, "0.3");
 		AssertEqual(values[2].value, "True");
-		AssertEqual(values[3].value, "Hello World!");
+		AssertEqual(values[3].value, "Hello World!\t");
 		
 		testIni1.BeginGroup("Group 2");
 		
@@ -1052,7 +1082,7 @@ public class IniFile_DemoScript : MonoBehaviour
 		
 		AssertEqual(values[0].key, "Subgroup 1/Key 6");
 		
-		AssertEqual(values[0].value, "Hello World!");
+		AssertEqual(values[0].value, "Hello World!\t");
 		
 		testIni1.EndGroup();
 		
@@ -1065,7 +1095,7 @@ public class IniFile_DemoScript : MonoBehaviour
 		            "\n"                     +
 		            "[Group 2/Subgroup 1]\n" +
 		            "\n"                     +
-		            "Key 6 = \"Hello World!\"\n");
+		            "Key 6 = \"Hello World!\t\"\n");
 		
 		testIni2.Parse(testIni1.ToString());
 		AssertEqual(testIni1, testIni2);
