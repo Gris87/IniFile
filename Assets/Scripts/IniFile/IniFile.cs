@@ -281,7 +281,7 @@ public class IniFile
 		}
 		else
 		{
-			Debug.LogError("Failed to close group. There is no more openned group");
+			Debug.LogError("Failed to close group. There is no more openned groups");
 		}
 	}
 
